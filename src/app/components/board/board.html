@@ -1,0 +1,65 @@
+<div class="board-container">
+  <header class="board-header">
+    <div class="header-content">
+      <h1>Jira Board</h1>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <div class="board-content">
+    <div class="columns-container">
+      <div class="column" *ngFor="let column of columns; trackBy: trackByColumnId">
+        <div class="column-header">
+          <div class="column-title">
+            <h2>{{ column.title }}</h2>
+            <span class="task-count">{{ column.tasks.length }}</span>
+          </div>
+          <button
+            class="add-task-button"
+            (click)="openAddTaskModal(column.id)"
+            title="Add new task"
+          >
+            +
+          </button>
+        </div>
+
+        <div
+          class="tasks-list"
+          cdkDropList
+          [id]="column.id"
+          [cdkDropListData]="[column.id]"
+          [cdkDropListConnectedTo]="getConnectedLists()"
+          (cdkDropListDropped)="onDrop($event, column.id)"
+        >
+          <div
+            class="task-card"
+            *ngFor="let task of column.tasks; trackBy: trackByTaskId"
+            cdkDrag
+            [cdkDragData]="task.id"
+          >
+            <div class="task-card-header">
+              <span class="task-id">{{ task.taskId }}</span>
+            </div>
+            <h3 class="task-title">{{ task.title }}</h3>
+            <p class="task-description">{{ task.description }}</p>
+            <div class="task-footer">
+              <span class="task-date">{{ task.createdAt | date : 'short' }}</span>
+            </div>
+          </div>
+
+          <div class="empty-state" *ngIf="column.tasks.length === 0">
+            <p>No tasks yet</p>
+            <small>Click + to add a task</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-task-modal
+  [isOpen]="isModalOpen"
+  [selectedColumn]="selectedColumn"
+  (closeModal)="closeModal()"
+  (submitTask)="onTaskSubmit($event)"
+></app-task-modal>

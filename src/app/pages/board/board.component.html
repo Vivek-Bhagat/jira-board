@@ -1,0 +1,32 @@
+<div class="board-container">
+    <header class="board-header">
+        <h1>Jira Board</h1>
+        <div class="header-actions">
+            <button class="btn-primary" (click)="showAddModal = true">+ Add Task</button>
+            <button class="btn-secondary" (click)="logout()">Logout</button>
+        </div>
+    </header>
+
+    <div class="board-columns" cdkDropListGroup>
+        <div class="board-column" *ngFor="let col of columns()">
+            <h2 class="column-title">
+                {{ col.title }}
+                <span class="task-count">{{ col.tasks.length }}</span>
+            </h2>
+
+            <div class="task-list" cdkDropList [cdkDropListData]="col.tasks" [id]="col.status"
+                (cdkDropListDropped)="drop($event)">
+
+                <app-task-card *ngFor="let task of col.tasks" [task]="task" cdkDrag>
+                </app-task-card>
+
+                <div class="empty-list-placeholder" *ngIf="col.tasks.length === 0">
+                    No tasks
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-add-task-modal *ngIf="showAddModal" (closeParams)="showAddModal = false" (saveParams)="onSaveTask($event)">
+    </app-add-task-modal>
+</div>

@@ -1,0 +1,57 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Jira Board</h1>
+      <p>Sign in to continue</p>
+    </div>
+
+    <form (ngSubmit)="onLogin()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="credentials.email"
+          placeholder="Enter your email"
+          [disabled]="isLoading"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="credentials.password"
+          placeholder="Enter your password"
+          [disabled]="isLoading"
+          required
+        />
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="isLoading">
+        {{ isLoading ? 'Signing in...' : 'Sign In' }}
+      </button>
+
+      <div class="demo-credentials">
+        <p>Demo Credentials:</p>
+        <button
+          type="button"
+          class="demo-button"
+          (click)="fillDemoCredentials()"
+          [disabled]="isLoading"
+        >
+          Fill Demo Credentials
+        </button>
+        <small>Email: admin@test.com | Password: admin123</small>
+      </div>
+    </form>
+  </div>
+</div>
